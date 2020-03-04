@@ -43,7 +43,7 @@ for step in range(train_num + 1):
         print("%.2f"%(step/train_num), cost_val)
 
 h,c,a = sess.run([hypothesis, predicted, accuracy], \
-                 feed_dict={X: x_data, Y: y_data})
+                 feed_dict={X: x_test, Y: y_test})
 
 print('hypothesis:\n',h,sep='')
 print('predicted:\n', c,sep='')
