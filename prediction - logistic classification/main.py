@@ -8,12 +8,12 @@ def min_max_scaler(data):
     # noise term prevents the zero division
     return numerator / (denominator + 1e-7)
 
-xy_data = np.loadtxt("GameData-faker.csv", delimiter=',', dtype=np.float32)
+xy_data = np.loadtxt("GameData-faker-random.csv", delimiter=',', dtype=np.float32)
 xy_data = min_max_scaler(xy_data)
 x_data = xy_data[:, 0:-1]
 y_data = xy_data[:, [-1]]
 
-xy_test = np.loadtxt("GameData-faker.csv", delimiter=',', dtype=np.float32)
+xy_test = np.loadtxt("GameData-adidasu-random.csv", delimiter=',', dtype=np.float32)
 xy_test = min_max_scaler(xy_test)
 x_test = xy_test[:, 0:-1]
 y_test = xy_test[:, [-1]]
@@ -32,21 +32,22 @@ train = tf.train.GradientDescentOptimizer(learning_rate=0.01).minimize(cost)
 predicted = tf.cast(hypothesis > 0.5, dtype=tf.float32)
 accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))
 
-with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
+sess = tf.Session()
+sess.run(tf.global_variables_initializer())
 
-    for step in range(10001):
-        cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, Y: y_data})
+train_num = 100000
+for step in range(train_num + 1):
+    cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, Y: y_data})
 
-        if(step%200==0):
-            print(step, cost_val)
+    if(step%1000==0):
+        print("%.2f"%(step/train_num), cost_val)
 
-    h,c,a = sess.run([hypothesis, predicted, accuracy], \
-                     feed_dict={X: x_test, Y: y_test})
+h,c,a = sess.run([hypothesis, predicted, accuracy], \
+                 feed_dict={X: x_data, Y: y_data})
 
-    print('hypothesis:\n',h,sep='')
-    print('predicted:\n', c,sep='')
-    print('accuracy:\n', a,sep='')
+print('hypothesis:\n',h,sep='')
+print('predicted:\n', c,sep='')
+print('accuracy:\n', a,sep='')
 
-    print('weight:\n', sess.run(W),sep='')
-    
+print('weight:\n', sess.run(W),sep='')
+
