@@ -3,7 +3,9 @@ League of Legends 게임의 12가지 데이터만으로 팀의 승패 여부를 
 
 ##  개요
 
-처음에는 Genetic Algorithm으로 접근하였지만 정확도가 생각보다 낮았고, 나중에 Logistic Classification 기법을 배운 뒤에 그걸로 해봤는데 겁나 잘맞아들었는줄 알았는데 아니다... 현재 오류 수정중 (weight는 예상대로 잘 나온듯한데.. 왜틀렸을까?)
+처음에는 Genetic Algorithm으로 접근하였지만 정확도가 생각보다 낮았고, 나중에 Logistic Classification 기법을 배운 뒤에 그걸로 해봤는데 오류가 생겨서 오류를 수정하니 0.85정도의 accuracy를 보인다.
+
+이 머신러닝 시스템을 실시간 경기에 적용한다면 팀의 우세정도를 실시간 수치로 나타낼 수도 있을 것이라고 본다.
 
 -----------
 
@@ -13,11 +15,9 @@ League of Legends 게임의 12가지 데이터만으로 팀의 승패 여부를 
 
 원래는 csv파일의 Y값이 1이었다.(승리한팀이 먼저 나온다는 뜻) 그래서 이를 랜덤하게 섞어 진팀이 먼저 나올수도 있게 하여 Y값이 1 또는 0이 되도록 하였다.
 
-그런데도 accuracy가 0.3에서 0.4 사이로 나타났다. 데이터 전처리와 learning/test case 분리도 하였다. 심지어 learning 데이터로 test해도 accuracy가 0.4 정도이다.
+`min_max_scaler`는 `x_data`, `x_test`에만 적용해주었다. y값들은 매칭할 때 `min_max_scaler`를 적용하면 `0.999999`가 되어 `1.`과 다르다고 판별되기 때문.
 
-문제의 원인으로 예상되는 것들은 다음과 같다.
-- model의 문제: 애초에 Logistic Classification으로 풀 수 없는 문제는 아닌지?
-- code의 문제: 코드를 배껴오는 과정에서 고려하지 못한 실수는 없었는지?
+이후에 입력 데이터를 더 늘리고 (챔피언 정보 등), 모델을 더 정교하게(logistic classification 말고 다른거 등) 한다면 더욱 높은 accuracy를 보일 수 있을 것이다.
 
 ### 참고자료
 
