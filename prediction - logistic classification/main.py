@@ -9,13 +9,13 @@ def min_max_scaler(data):
     return numerator / (denominator + 1e-7)
 
 xy_data = np.loadtxt("GameData-faker-random.csv", delimiter=',', dtype=np.float32)
-xy_data = min_max_scaler(xy_data)
-x_data = xy_data[:, 0:-1]
+#xy_data = min_max_scaler(xy_data)
+x_data = min_max_scaler(xy_data[:, 0:-1])
 y_data = xy_data[:, [-1]]
 
 xy_test = np.loadtxt("GameData-adidasu-random.csv", delimiter=',', dtype=np.float32)
-xy_test = min_max_scaler(xy_test)
-x_test = xy_test[:, 0:-1]
+#xy_test = min_max_scaler(xy_test)
+x_test = min_max_scaler(xy_test[:, 0:-1])
 y_test = xy_test[:, [-1]]
 
 X = tf.placeholder(tf.float32, shape=[None, 12])
@@ -35,11 +35,11 @@ accuracy = tf.reduce_mean(tf.cast(tf.equal(predicted, Y), dtype=tf.float32))
 sess = tf.Session()
 sess.run(tf.global_variables_initializer())
 
-train_num = 100000
+train_num = 10000
 for step in range(train_num + 1):
     cost_val, _ = sess.run([cost, train], feed_dict={X: x_data, Y: y_data})
 
-    if(step%1000==0):
+    if(step%100==0):
         print("%.2f"%(step/train_num), cost_val)
 
 h,c,a = sess.run([hypothesis, predicted, accuracy], \
