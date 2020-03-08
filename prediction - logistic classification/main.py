@@ -8,12 +8,14 @@ def min_max_scaler(data):
     # noise term prevents the zero division
     return numerator / (denominator + 1e-7)
 
-xy_data = np.loadtxt("GameData-faker-random.csv", delimiter=',', dtype=np.float32)
+xy_data = np.loadtxt("GameData-faker-random.csv", delimiter=',', \
+                     dtype=np.float32)
 #xy_data = min_max_scaler(xy_data)
 x_data = min_max_scaler(xy_data[:, 0:-1])
 y_data = xy_data[:, [-1]]
 
-xy_test = np.loadtxt("GameData-adidasu-random.csv", delimiter=',', dtype=np.float32)
+xy_test = np.loadtxt("GameData-adidasu-random.csv", delimiter=',', \
+                     dtype=np.float32)
 #xy_test = min_max_scaler(xy_test)
 x_test = min_max_scaler(xy_test[:, 0:-1])
 y_test = xy_test[:, [-1]]
@@ -42,12 +44,13 @@ for step in range(train_num + 1):
     if(step%100==0):
         print("%.2f"%(step/train_num), cost_val)
 
-h,c,a = sess.run([hypothesis, predicted, accuracy], \
-                 feed_dict={X: x_test, Y: y_test})
+if __name__ == '__main__':
+    h,c,a = sess.run([hypothesis, predicted, accuracy], \
+                     feed_dict={X: x_test, Y: y_test})
 
-print('hypothesis:\n',h,sep='')
-print('predicted:\n', c,sep='')
-print('accuracy:\n', a,sep='')
+    print('hypothesis:\n',h,sep='')
+    print('predicted:\n', c,sep='')
+    print('accuracy:\n', a,sep='')
 
-print('weight:\n', sess.run(W),sep='')
+    print('weight:\n', sess.run(W),sep='')
 
